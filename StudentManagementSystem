@@ -1,0 +1,31 @@
+import java.util.*;
+
+public class StudentManagementSystem {
+    private Map<Integer, String> students = new HashMap<>();
+
+    public void addStudent(int id, String name) {
+        students.put(id, name);
+    }
+
+    public void removeStudent(int id) {
+        students.remove(id);
+    }
+
+    public void viewStudent(int id) {
+        System.out.println(students.getOrDefault(id, "Student not found"));
+    }
+
+    public void viewAllStudents() {
+        students.forEach((id, name) -> System.out.println(id + ": " + name));
+    }
+
+    public static void main(String[] args) {
+        StudentManagementSystem sms = new StudentManagementSystem();
+        sms.addStudent(1, "kishor");
+        sms.addStudent(2, "ram");
+        sms.viewAllStudents();
+        sms.viewStudent(1);
+        sms.removeStudent(2);
+        sms.viewAllStudents();
+    }
+}
