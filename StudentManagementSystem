@@ -1,31 +1,107 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class Student {
+    int id;
+    String name;
+    int age;
+
+    public Student(int id, String name, int age) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+    }
+
+    public void display() {
+        System.out.println("ID: " + id + ", Name: " + name + ", Age: " + age);
+    }
+}
 
 public class StudentManagementSystem {
-    private Map<Integer, String> students = new HashMap<>();
+    static ArrayList<Student> students = new ArrayList<>();
+    static Scanner scanner = new Scanner(System.in);
 
-    public void addStudent(int id, String name) {
-        students.put(id, name);
+    public static void addStudent() {
+        System.out.print("Enter Student ID: ");
+        int id = scanner.nextInt();
+        scanner.nextLine(); // Consume newline
+        System.out.print("Enter Student Name: ");
+        String name = scanner.nextLine();
+        System.out.print("Enter Student Age: ");
+        int age = scanner.nextInt();
+        students.add(new Student(id, name, age));
+        System.out.println("Student added successfully!\n");
     }
 
-    public void removeStudent(int id) {
-        students.remove(id);
+    public static void removeStudent() {
+        System.out.print("Enter Student ID to remove: ");
+        int id = scanner.nextInt();
+        students.removeIf(student -> student.id == id);
+        System.out.println("Student removed successfully!\n");
     }
 
-    public void viewStudent(int id) {
-        System.out.println(students.getOrDefault(id, "Student not found"));
+    public static void updateStudent() {
+        System.out.print("Enter Student ID to update: ");
+        int id = scanner.nextInt();
+        scanner.nextLine();
+        for (Student student : students) {
+            if (student.id == id) {
+                System.out.print("Enter New Name: ");
+                student.name = scanner.nextLine();
+                System.out.print("Enter New Age: ");
+                student.age = scanner.nextInt();
+                System.out.println("Student updated successfully!\n");
+                return;
+            }
+        }
+        System.out.println("Student not found!\n");
     }
 
-    public void viewAllStudents() {
-        students.forEach((id, name) -> System.out.println(id + ": " + name));
+    public static void listStudents() {
+        if (students.isEmpty()) {
+            System.out.println("No students found!\n");
+        } else {
+            System.out.println("Student List:");
+            for (Student student : students) {
+                student.display();
+            }
+            System.out.println();
+        }
+    }
+
+    public static void viewStudent() {
+        System.out.print("Enter Student ID to view: ");
+        int id = scanner.nextInt();
+        for (Student student : students) {
+            if (student.id == id) {
+                student.display();
+                return;
+            }
+        }
+        System.out.println("Student not found!\n");
+    }
+
+    public static void deleteAllStudents() {
+        students.clear();
+        System.out.println("All student records deleted!\n");
     }
 
     public static void main(String[] args) {
-        StudentManagementSystem sms = new StudentManagementSystem();
-        sms.addStudent(1, "kishor");
-        sms.addStudent(2, "ram");
-        sms.viewAllStudents();
-        sms.viewStudent(1);
-        sms.removeStudent(2);
-        sms.viewAllStudents();
+        while (true) {
+            System.out.println("1. Add Student\n2. Remove Student\n3. Update Student\n4. List Students\n5. View Student\n6. Delete All Students\n7. Exit");
+            System.out.print("Choose an option: ");
+            int choice = scanner.nextInt();
+            switch (choice) {
+                case 1: addStudent(); break;
+                case 2: removeStudent(); break;
+                case 3: updateStudent(); break;
+                case 4: listStudents(); break;
+                case 5: viewStudent(); break;
+                case 6: deleteAllStudents(); break;
+                case 7: System.out.println("Exiting..."); System.exit(0);
+                default: System.out.println("Invalid choice!\n");
+            }
+        }
     }
 }
+
